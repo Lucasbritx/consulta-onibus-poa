@@ -5,15 +5,16 @@ import 'react-tabs/style/react-tabs.css';
 type TabProps = {
     Tab1: any,
     Tab2: any,
-    TitleTab1: string;
-    TitleTab2: string;
+    TitleTab1: string,
+    TitleTab2: string,
+    onSelect: () => any,
 }
 
-const Tab: FC<TabProps> = ({ Tab1, Tab2, TitleTab1, TitleTab2 }) => (
-    <Tabs>
+const Tab: FC<TabProps> = ({ Tab1, Tab2, TitleTab1, TitleTab2, onSelect }) => (
+    <Tabs onSelect={onSelect}>
         <TabList>
             <OriginalTab>{TitleTab1}</OriginalTab>
-            <OriginalTab>{TitleTab2 }</OriginalTab>
+            <OriginalTab>{TitleTab2}</OriginalTab>
         </TabList>
         <TabPanel>
             {Tab1}

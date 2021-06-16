@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import InputSelect from '../components/InputSelect';
 import Tab from '../components/Tab';
+import List from '../components/List';
 import axios from '../middlewares/axios';
 
 
@@ -12,10 +13,34 @@ type Bus = {
 
 type TypeBus = 'microbus' | 'bus'
 
+type TypeOptions = { value: string, label: string } | null
+
 const Home: FC = () => {
     const [bus, setBus] = useState<Bus[]>([]);
     const [microBus, setMicroBus] = useState<Bus[]>([]);
-    const [typeBus, setTypeBus] = useState<TypeBus>("bus");
+    const [busView, setBusView] = useState<TypeOptions>({ label: "", value: "" });
+    const [busItinerary, setBusItinerary] = useState<object[]>([]);
+
+    const fetchItinerary = async (id: number): Promise<Bus[]> => {
+        try {
+            const { data } = await axios.get(`?a=il&p=${id}`);
+            return data;
+        } catch (error) {
+            return error;
+        }
+
+    };
+
+    useEffect(() => {
+        const getItinerary = async () => {
+            if (!!busView!.value) {
+                const response = await fetchItinerary(parseInt(busView!.value));
+                setBusItinerary(response);
+            }
+        }
+
+        getItinerary();
+    }, [busView])
 
     const getUrlBytypeBus = (typeBus: TypeBus): string => {
         switch (typeBus) {
@@ -40,6 +65,8 @@ const Home: FC = () => {
         }
     };
 
+
+
     useEffect(() => {
         const getBuses = async () => {
             const newBuses = await fetchBuses('bus');
@@ -49,7 +76,7 @@ const Home: FC = () => {
         }
 
         getBuses()
-    }, [typeBus]);
+    }, []);
 
     const getBusOptions = () => {
         return bus.map((b: Bus) => {
@@ -66,21 +93,28 @@ const Home: FC = () => {
     return (
         <>
             <Tab
-            TitleTab1={'Ônibus'}
-            TitleTab2={'Lotação'} 
-            Tab1={
-                <InputSelect
-                options={getBusOptions()}
-                // onChange={({ value }) => { console.log(value) }}
-                />
-                
-            }
-            Tab2={
-                <InputSelect
-                options={getMicroBusOptions()}
-                // onChange={({ value }) => { console.log(value) }}
-                />
-            }
+                onSelect={() => { setBusItinerary([]) }}
+                TitleTab1={'Ônibus'}
+                TitleTab2={'Lotação'}
+                Tab1={
+                    <>
+                        <InputSelect
+                            options={getBusOptions()}
+                            onChange={(item: TypeOptions) => { setBusView(item) }}
+                        />
+                        <List itinerary={busItinerary} />
+                    </>
+
+                }
+                Tab2={
+                    <>
+                        <InputSelect
+                            options={getMicroBusOptions()}
+                            onChange={(item: TypeOptions) => { setBusView(item) }}
+                        />
+                        <List itinerary={busItinerary} />
+                    </>
+                }
             />
         </>
     )
