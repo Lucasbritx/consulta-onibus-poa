@@ -98,6 +98,7 @@ const Home: FC = () => {
                 Tab1={
                     <>
                         <InputSelect
+                            placeholder="Selecione uma linha de ônibus"
                             className={'select'}
                             options={getBusOptions()}
                             onChange={(item: TypeOptions) => { setBusView(item) }}
@@ -109,6 +110,7 @@ const Home: FC = () => {
                 Tab2={
                     <>
                         <InputSelect
+                            placeholder="Selecione uma linha de lotação"
                             className={'select'}
                             options={getMicroBusOptions()}
                             onChange={(item: TypeOptions) => { setBusView(item) }}

@@ -31,9 +31,12 @@ const List: FC<ListProps> = ({ itinerary }) => {
                 {itineraries.map((item: Itinerary, index: number) => {
                     return (
                         <li className="grow" key={index}>
-                            <button>
-                                <a className="link" href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>Parada - {index}</a>
-                            </button>
+                           <a className="link"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>
+                                    Parada - {index}
+                                </a>
                         </li>
                     )
 
