@@ -4,11 +4,21 @@
     --black: #000000;
 }
 
-ul {
+.wrapper ul {
     list-style-type: none;
 }
 
-.link {
+.grow { 
+    display:flex;
+    justify-content:center;
+    transition: all .2s ease-in-out; 
+}
+
+.grow:hover { 
+    transform: scale(1.1); 
+}
+
+.grow .link {
     text-decoration: none;
     color: var(--black);
     width: 100%;
@@ -25,19 +35,6 @@ ul {
     align-items: center;
 }
 
-.link:hover {
+.grow .link:hover {
     background: var(--grey);
 }
-
-.grow { 
-    display:flex;
-    justify-content:center;
-    transition: all .2s ease-in-out; 
-}
-
-.grow:hover { 
-    transform: scale(1.1); 
-}
-
-
-

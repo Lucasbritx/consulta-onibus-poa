@@ -98,7 +98,7 @@ const Home: FC = () => {
                 Tab1={
                     <>
                         <InputSelect
-                            placeholder="Selecione uma linha de ônibus"
+                            placeholder="Selecione uma linha de ônibusg"
                             className={'select'}
                             options={getBusOptions()}
                             onChange={(item: TypeOptions) => { setBusView(item) }}
