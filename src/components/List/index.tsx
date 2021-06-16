@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
+import './index.css'
 
 type ListProps = {
     itinerary: object;
@@ -25,16 +26,20 @@ const List: FC<ListProps> = ({ itinerary }) => {
     useEffect(constructItineraries, [itinerary])
 
     return (
-        <ul>
-            {itineraries.map((item: Itinerary, index: number) => {
-                return (
-                    <li key={index}>
-                        <a href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>Parada - {index}</a>
-                    </li>
-                )
+        <div className="wrapper">
+            <ul>
+                {itineraries.map((item: Itinerary, index: number) => {
+                    return (
+                        <li className="grow" key={index}>
+                            <button>
+                                <a className="link" href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>Parada - {index}</a>
+                            </button>
+                        </li>
+                    )
 
-            })}
-        </ul >
+                })}
+            </ul >
+        </div>
     );
 
 };

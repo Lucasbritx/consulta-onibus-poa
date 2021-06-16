@@ -1,0 +1,16 @@
+ul {
+    list-style-type: none;
+}
+
+.link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+}
+
+.grow:hover { 
+    transform: scale(1.1); 
+}

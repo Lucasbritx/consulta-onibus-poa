@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
+import './index.css';
 import InputSelect from '../components/InputSelect';
 import Tab from '../components/Tab';
 import List from '../components/List';
 import axios from '../middlewares/axios';
-
 
 type Bus = {
     id: string,
@@ -65,8 +65,6 @@ const Home: FC = () => {
         }
     };
 
-
-
     useEffect(() => {
         const getBuses = async () => {
             const newBuses = await fetchBuses('bus');
@@ -92,6 +90,7 @@ const Home: FC = () => {
 
     return (
         <>
+            <h1>Consulta de itinerários</h1>
             <Tab
                 onSelect={() => { setBusItinerary([]) }}
                 TitleTab1={'Ônibus'}
@@ -99,6 +98,7 @@ const Home: FC = () => {
                 Tab1={
                     <>
                         <InputSelect
+                            className={'select'}
                             options={getBusOptions()}
                             onChange={(item: TypeOptions) => { setBusView(item) }}
                         />
@@ -109,6 +109,7 @@ const Home: FC = () => {
                 Tab2={
                     <>
                         <InputSelect
+                            className={'select'}
                             options={getMicroBusOptions()}
                             onChange={(item: TypeOptions) => { setBusView(item) }}
                         />
