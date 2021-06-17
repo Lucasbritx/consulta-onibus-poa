@@ -23,8 +23,10 @@ const Home: FC = () => {
     const [microBus, setMicroBus] = useState<Bus[]>([]);
     const [busView, setBusView] = useState<Option>({ label: "", value: "" });
     const [busItinerary, setBusItinerary] = useState<Itinerary[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        setLoading(true);
         const getItinerary = async () => {
             if (!!busView!.value) {
                 const { data } = await axios.get(`?a=il&p=${parseInt(busView!.value)}`);
@@ -33,6 +35,7 @@ const Home: FC = () => {
         };
 
         getItinerary();
+        setLoading(false);
     }, [busView]);
 
     const getUrlBytypeBus = (typeBus: TypeBus): string => {
@@ -59,6 +62,7 @@ const Home: FC = () => {
     };
 
     useEffect(() => {
+        setLoading(true);
         const getBuses = async () => {
             const newBuses = await fetchBuses('bus');
             const newMicroBus = await fetchBuses('microbus');
@@ -67,6 +71,7 @@ const Home: FC = () => {
         }
 
         getBuses()
+        setLoading(false);
     }, []);
 
     const getBusOptions = () => {
@@ -94,7 +99,9 @@ const Home: FC = () => {
                             placeholder="Selecione uma linha de ônibus"
                             className="select"
                             options={getBusOptions()}
-                            onChange={(item) => { item && setBusView(item) }}
+                            onChange={(item) => { 
+                                item && setBusView(item);
+                            }}
                         />
                         <List itineraries={busItinerary} />
                     </>
@@ -106,7 +113,9 @@ const Home: FC = () => {
                             placeholder="Selecione uma linha de lotação"
                             className="select"
                             options={getMicroBusOptions()}
-                            onChange={(item) => { item && setBusView(item) }}
+                            onChange={(item) => { 
+                                item && setBusView(item) 
+                            }}
                         />
                         <List itineraries={busItinerary} />
                     </>
