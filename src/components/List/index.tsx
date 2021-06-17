@@ -1,46 +1,31 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
+import { Itinerary } from '../../pages/Home';
 import './index.css'
 
 type ListProps = {
-    itinerary: object;
+    itineraries: Itinerary[];
 }
 
-type Itinerary = {
-    lat: string,
-    lng: string
-}
+const List: FC<ListProps> = ({ itineraries }) => {
 
-const List: FC<ListProps> = ({ itinerary }) => {
-    const [itineraries, setItineraries] = useState<Itinerary[]>([])
+    const ListItineraries = useMemo(() => itineraries.map((item, index) => {
+        return (
+            <li className="grow" key={index}>
+               <a className="link"
+                        target="_blank"
+                        rel="noreferrer"
+                        href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>
+                        Parada - {index}
+                    </a>
+            </li>
+        )
 
-    const constructItineraries = () => {
-        const itineraries: Itinerary[] = []
-        Object.values(itinerary).map((item) => {
-            if (typeof (item) === 'object') {
-                itineraries.push(item)
-            }
-        });
-        return setItineraries(itineraries)
-    }
-
-    useEffect(constructItineraries, [itinerary])
+    }), [itineraries]);
 
     return (
         <div className="wrapper">
             <ul>
-                {itineraries.map((item: Itinerary, index: number) => {
-                    return (
-                        <li className="grow" key={index}>
-                           <a className="link"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    href={`https://www.google.com/maps/?q=${item.lat},${item.lng} `}>
-                                    Parada - {index}
-                                </a>
-                        </li>
-                    )
-
-                })}
+                { ListItineraries }
             </ul >
         </div>
     );

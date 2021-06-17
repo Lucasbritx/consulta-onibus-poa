@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import './index.css';
-import InputSelect from '../components/InputSelect';
+import InputSelect, { Option } from '../components/InputSelect';
 import Tab from '../components/Tab';
 import List from '../components/List';
 import axios from '../middlewares/axios';
@@ -9,38 +9,31 @@ type Bus = {
     id: string,
     codigo: string,
     nome: string,
+};
+
+type TypeBus = 'microbus' | 'bus';
+
+export type Itinerary = {
+    lat: string,
+    lng: string
 }
-
-type TypeBus = 'microbus' | 'bus'
-
-type TypeOptions = { value: string, label: string } | null
 
 const Home: FC = () => {
     const [bus, setBus] = useState<Bus[]>([]);
     const [microBus, setMicroBus] = useState<Bus[]>([]);
-    const [busView, setBusView] = useState<TypeOptions>({ label: "", value: "" });
-    const [busItinerary, setBusItinerary] = useState<object[]>([]);
-
-    const fetchItinerary = async (id: number): Promise<Bus[]> => {
-        try {
-            const { data } = await axios.get(`?a=il&p=${id}`);
-            return data;
-        } catch (error) {
-            return error;
-        }
-
-    };
+    const [busView, setBusView] = useState<Option>({ label: "", value: "" });
+    const [busItinerary, setBusItinerary] = useState<Itinerary[]>([]);
 
     useEffect(() => {
         const getItinerary = async () => {
             if (!!busView!.value) {
-                const response = await fetchItinerary(parseInt(busView!.value));
-                setBusItinerary(response);
+                const { data } = await axios.get(`?a=il&p=${parseInt(busView!.value)}`);
+                setBusItinerary(Object.values(data));
             }
-        }
+        };
 
         getItinerary();
-    }, [busView])
+    }, [busView]);
 
     const getUrlBytypeBus = (typeBus: TypeBus): string => {
         switch (typeBus) {
@@ -54,7 +47,7 @@ const Home: FC = () => {
                 return '?a=nc&p=%&t=o';
             }
         }
-    }
+    };
 
     const fetchBuses = async (typeBus: TypeBus): Promise<Bus[]> => {
         try {
@@ -101,9 +94,9 @@ const Home: FC = () => {
                             placeholder="Selecione uma linha de ônibus"
                             className="select"
                             options={getBusOptions()}
-                            onChange={(item: TypeOptions) => { setBusView(item) }}
+                            onChange={(item) => { item && setBusView(item) }}
                         />
-                        <List itinerary={busItinerary} />
+                        <List itineraries={busItinerary} />
                     </>
 
                 }
@@ -113,9 +106,9 @@ const Home: FC = () => {
                             placeholder="Selecione uma linha de lotação"
                             className="select"
                             options={getMicroBusOptions()}
-                            onChange={(item: TypeOptions) => { setBusView(item) }}
+                            onChange={(item) => { item && setBusView(item) }}
                         />
-                        <List itinerary={busItinerary} />
+                        <List itineraries={busItinerary} />
                     </>
                 }
             />
